@@ -33,7 +33,19 @@
  *
  */
 function* get99BottlesOfBeer() {
-    throw new Error('Not implemented');
+    var numberofbottle = 99;
+    var s = "s";
+    while (numberofbottle > 1){
+        if (numberofbottle == 2) {
+            var s = ""
+        };
+        yield numberofbottle + " bottles of beer on the wall, " + numberofbottle-- + " bottles of beer.";
+        yield "Take one down and pass it around, " + numberofbottle + " bottle" + s + " of beer on the wall.";
+    }
+    yield '1 bottle of beer on the wall, 1 bottle of beer.';
+    yield 'Take one down and pass it around, no more bottles of beer on the wall.';
+    yield 'No more bottles of beer on the wall, no more bottles of beer.';
+    yield 'Go to the store and buy some more, 99 bottles of beer on the wall.';
 }
 
 
@@ -47,7 +59,16 @@ function* get99BottlesOfBeer() {
  *
  */
 function* getFibonacciSequence() {
-    throw new Error('Not implemented');
+    var prev = 0;
+    var next = 1;
+    yield prev;
+        
+    while (true) {
+        var cur = next;
+        next = next + prev;
+        prev = cur;      
+        yield cur; 
+    }
 }
 
 
@@ -82,7 +103,18 @@ function* getFibonacciSequence() {
  *
  */
 function* depthTraversalTree(root) {
-    throw new Error('Not implemented');
+    const stack = [];    
+    stack.push(root);
+    while (stack.length) {
+        let curr = stack.pop();
+        yield curr;        
+        
+        if (curr.children) {
+            let children = curr.children;
+            for(let i = children.length - 1; i >= 0; i--)               
+                stack.push(children[i]);
+        }
+    } 
 }
 
 
@@ -108,7 +140,14 @@ function* depthTraversalTree(root) {
  *
  */
 function* breadthTraversalTree(root) {
-    throw new Error('Not implemented');
+    let queue = [[root]];
+    while (queue.length > 0) {
+        for (let node of queue.shift()) {
+            yield node;
+            if (node.children) queue.push(node.children);
+        }
+    }
+
 }
 
 
@@ -126,7 +165,29 @@ function* breadthTraversalTree(root) {
  *   [ 1, 3, 5, ... ], [ -1 ] => [ -1, 1, 3, 5, ...]
  */
 function* mergeSortedSequences(source1, source2) {
-    throw new Error('Not implemented');
+    let src1, src2;
+    src1 = source1();
+    src2 = source2();
+    let num1, num2;
+    num1 = src1.next().value;
+    num2 = src2.next().value;
+    while ((num1 != undefined) && (num2 != undefined)) {
+    	if (num1 < num2) {
+    		yield num1;
+    		num1 = src1.next().value;
+    	} else {
+    		yield num2;
+    		num2 = src2.next().value;
+    	}
+    }
+    while (num1 != undefined) {
+    	yield num1;
+    	num1 = src1.next().value;
+    }
+    while (num2 != undefined) {
+    	yield num2;
+    	num2 = src2.next().value;
+    }
 }
 
 
